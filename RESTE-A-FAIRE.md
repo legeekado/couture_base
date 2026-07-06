@@ -1,8 +1,26 @@
-# Kalmy — ce qui reste à faire
+# Kayñiawlu — ce qui reste à faire
 
-> Dernière mise à jour : juillet 2026.  
+> Dernière mise à jour : 6 juillet 2026.  
 > Tout le cœur V1 est en place (API, mobile, backoffice, offline, équipe, rappels).  
 > Ce fichier recense ce qui **n'est pas encore fait** ou **volontairement laissé en stub**.
+
+---
+
+## Configuration à finaliser (avant prod)
+
+### Web Push — rappels livraison backoffice
+
+**État actuel :** infra en place (table `web_push_subscriptions`, API subscribe/unsubscribe, service worker `backoffice/public/sw.js`, notifications desktop par polling). Les clés VAPID sont dans `backend/.env` en local.
+
+**À faire :**
+- [x] Installer le package PHP : `composer require minishlink/web-push` (fait en local — v8.0.0).
+- [ ] Copier les variables VAPID en production (`WEBPUSH_VAPID_PUBLIC_KEY`, `WEBPUSH_VAPID_PRIVATE_KEY`, `WEBPUSH_VAPID_SUBJECT`) — **ne pas réutiliser les clés de dev**.
+- [ ] Générer une nouvelle paire prod : `npx web-push generate-vapid-keys`.
+- [ ] Backoffice en **HTTPS** obligatoire (service worker + permission navigateur).
+- [ ] Activer les préférences dans **Mon compte** (notifications desktop / Web Push).
+- [ ] Lancer `php artisan queue:work` (ou worker supervisé) pour que le job `kalmy:rappels-livraison` envoie les push à la création des rappels.
+
+**Fichiers :** `backend/config/webpush.php`, `backend/.env.example`, `backend/app/Services/WebPushNotificationService.php`, `backoffice/src/components/RappelNotificationManager.tsx`.
 
 ---
 
@@ -25,7 +43,7 @@
 
 ### Notifications clients (SMS / WhatsApp)
 
-**État actuel :** rappels **internes** à l'atelier (table `rappels`, job `kalmy:rappels-livraison`, affichage mobile + backoffice). Aucun envoi au client final.
+**État actuel :** rappels **internes** à l'atelier (table `rappels`, job `kalmy:rappels-livraison`, affichage mobile + backoffice + push desktop/Web Push côté backoffice). Aucun envoi au client final.
 
 **À faire :**
 - [ ] Choisir un fournisseur (Twilio, Meta WhatsApp Business API, service local Sénégal).
@@ -41,7 +59,7 @@
 
 **À faire :**
 - [ ] Hébergement API (VPS, Railway, Forge, etc.) + PostgreSQL managé.
-- [ ] HTTPS, domaine (`api.kalmy.sn`), variables d'environnement prod.
+- [ ] HTTPS, domaine (`api.kayniawlu.sn` ou équivalent), variables d'environnement prod (dont VAPID, mail SMTP).
 - [ ] Backoffice déployé (Vercel ou conteneur) avec `NEXT_PUBLIC_API_HOST` prod.
 - [ ] **App Store** (iOS) : compte Apple Developer, certificats, fiche store, captures.
 - [ ] **Play Store** (Android) : compte Google Play, AAB signé, fiche store.
@@ -55,13 +73,15 @@
 
 - [ ] Mot de passe oublié (écran + endpoint Laravel `password reset`).
 - [ ] Édition de client/commande depuis listes (au-delà des écrans déjà branchés).
-- [ ] Push notifications (Firebase) pour rappels de livraison à la place du seul bandeau in-app.
+- [ ] Push notifications **Firebase (FCM)** pour rappels de livraison (le backoffice a déjà desktop + Web Push ; le mobile n'a que le bandeau in-app).
+- [ ] Filtres recherche + panneau sur **Clients** (pattern déjà en place sur Commandes via `ListFilterShell`).
+- [ ] Admin atelier mobile : assignation employés ↔ PDV (comme le modal Équipe du backoffice).
 - [ ] Tests widget / intégration plus poussés (hors-ligne, sync queue).
 - [ ] Icône et splash stores (assets distincts des écrans in-app).
 
 ### Backoffice
 
-- [ ] CRUD clients / commandes / mesures côté web (aujourd'hui surtout lecture + équipe).
+- [ ] CRUD clients / commandes / mesures côté web (aujourd'hui surtout lecture + équipe + types de vêtement).
 - [ ] Page « Mon abonnement » (voir paiement ci-dessus).
 - [ ] Superadmin : création/suspension d'atelier au-delà du modal « Nouvel atelier ».
 - [ ] Export CSV des commandes ou clients.
@@ -71,7 +91,7 @@
 - [ ] Tests E2E GraphQL plus larges (rappels, billing, pagination).
 - [ ] Rate limiting API / GraphQL en production.
 - [ ] Logs structurés + monitoring (Sentry, etc.).
-- [ ] File d'attente Laravel (`queue:work`) pour rappels et futurs envois SMS.
+- [ ] File d'attente Laravel (`queue:work`) documentée et supervisée en prod (rappels, futurs envois SMS, Web Push).
 
 ---
 
@@ -92,19 +112,26 @@ Référence rapide — détail dans `README.md` § Roadmap :
 
 - Auth Sanctum, multi-tenant, GraphQL lectures + CRUD REST écritures.
 - Mobile : clients, mesures, commandes, statuts, offline SQLite + sync.
+- Mobile : édition des types atelier pendant la saisie des mesures ; snapshot immuable des fiches (`champs` + `valeurs`).
+- Mobile : profil connecté (nom, email, téléphone, mot de passe).
+- Mobile : admin atelier propriétaire (équipe + PDV CRUD).
+- Mobile : filtres commandes (recherche + panneau filtres, pattern backoffice).
 - Backoffice : portail couturier, équipe, superadmin ateliers/utilisateurs.
-- Plans SaaS (limites PDV / utilisateurs), seeders démo, 21 tests feature Laravel.
+- Backoffice : CRUD types de vêtement (upload / recherche Openverse), page Mon compte, notifications rappels (desktop + Web Push côté client).
+- Plans SaaS (limites PDV / utilisateurs), seeders démo, **42 tests** feature Laravel.
 - Rappels livraison internes, Docker Compose local.
+- Images types de vêtement (`image_path`, import URL, recherche Openverse).
 
 ---
 
 ## Ordre recommandé
 
-1. **Déploiement prod** (API + backoffice HTTPS) — pour tester avec de vrais couturiers.
-2. **Paiement Wave** — monétiser les plans pro / entreprise.
-3. **Stores mobile** — distribution au Sénégal.
-4. **SMS / WhatsApp** — valeur ajoutée client final.
-5. **Confort** (mot de passe oublié, CRUD web, push).
+1. **Finaliser Web Push** (`composer require minishlink/web-push`, clés prod, HTTPS, queue worker).
+2. **Déploiement prod** (API + backoffice HTTPS) — pour tester avec de vrais couturiers.
+3. **Paiement Wave** — monétiser les plans pro / entreprise.
+4. **Stores mobile** — distribution au Sénégal.
+5. **SMS / WhatsApp** — valeur ajoutée client final.
+6. **Confort** (mot de passe oublié, CRUD web complet, push mobile FCM).
 
 ---
 
