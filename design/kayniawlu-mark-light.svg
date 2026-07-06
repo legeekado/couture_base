@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kay&#241;iawlu">
-  <rect width="512" height="512" rx="112" fill="#0F5B4C"/>
-
-  <!-- Ribbon: lower stroke of the K that reveals itself -->
+  <!-- Ribbon -->
   <path
-    fill="#F4EFE7"
+    fill="#0F5B4C"
     d="M 252 272
        C 282 280, 318 306, 344 340
        C 372 376, 392 412, 402 432
@@ -16,7 +14,7 @@
        Z"
   />
 
-  <!-- Thread: arrives from the left, loops, reaches the eye -->
+  <!-- Thread: left loop -->
   <path
     d="M 76 278
        C 58 244, 64 188, 108 164
@@ -32,9 +30,9 @@
     fill="none"
   />
 
-  <!-- Needle: backbone -->
+  <!-- Needle -->
   <path
-    fill="#F4EFE7"
+    fill="#0F5B4C"
     fill-rule="evenodd"
     d="M 220 88
        C 224.8 86.4, 237.2 86.4, 242 88
@@ -54,7 +52,7 @@
        Z"
   />
 
-  <!-- Thread: through the eye, sweeps right, calligraphic tail -->
+  <!-- Thread: exits right -->
   <path
     d="M 232 118
        C 250 102, 308 84, 370 94
