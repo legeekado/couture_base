@@ -74,14 +74,15 @@
 - [ ] Mot de passe oublié (écran + endpoint Laravel `password reset`).
 - [ ] Édition de client/commande depuis listes (au-delà des écrans déjà branchés).
 - [ ] Push notifications **Firebase (FCM)** pour rappels de livraison (le backoffice a déjà desktop + Web Push ; le mobile n'a que le bandeau in-app).
-- [ ] Filtres recherche + panneau sur **Clients** (pattern déjà en place sur Commandes via `ListFilterShell`).
+- [x] Filtres recherche + panneau sur **Clients** (genre, pattern `ListFilterShell`).
 - [ ] Admin atelier mobile : assignation employés ↔ PDV (comme le modal Équipe du backoffice).
 - [ ] Tests widget / intégration plus poussés (hors-ligne, sync queue).
 - [ ] Icône et splash stores (assets distincts des écrans in-app).
 
 ### Backoffice
 
-- [ ] CRUD clients / commandes / mesures côté web (aujourd'hui surtout lecture + équipe + types de vêtement).
+- [x] CRUD **clients** et **commandes** côté web atelier (création, édition, suppression, changement de statut).
+- [ ] CRUD **mesures** côté web (aujourd'hui lecture seule ; création via mobile).
 - [ ] Page « Mon abonnement » (voir paiement ci-dessus).
 - [ ] Superadmin : création/suspension d'atelier au-delà du modal « Nouvel atelier ».
 - [ ] Export CSV des commandes ou clients.
@@ -98,7 +99,8 @@
 ## Priorité basse — évolutions V2
 
 - [ ] Espace client (le client final consulte sa commande / ses mesures).
-- [ ] Factures PDF / reçus d'acompte.
+- [x] Reçus PDF commande + ticket de caisse (backoffice + mobile + partage).
+- [ ] Factures PDF / reçus d'acompte dédiés (V2).
 - [ ] Statistiques avancées (CA par PDV, par période, export comptable).
 - [ ] Multi-langue (wolof en plus du français).
 - [ ] Mode sombre (mobile + backoffice).
@@ -115,7 +117,8 @@ Référence rapide — détail dans `README.md` § Roadmap :
 - Mobile : édition des types atelier pendant la saisie des mesures ; snapshot immuable des fiches (`champs` + `valeurs`).
 - Mobile : profil connecté (nom, email, téléphone, mot de passe).
 - Mobile : admin atelier propriétaire (équipe + PDV CRUD).
-- Mobile : filtres commandes (recherche + panneau filtres, pattern backoffice).
+- Mobile : filtres commandes et **clients** (recherche + panneau filtres, pattern backoffice).
+- Mobile : genre client (masculin, féminin, autre) sur fiche et filtres.
 - Backoffice : portail couturier, équipe, superadmin ateliers/utilisateurs.
 - Backoffice : CRUD types de vêtement (upload / recherche Openverse), page Mon compte, notifications rappels (desktop + Web Push côté client).
 - Plans SaaS (limites PDV / utilisateurs), seeders démo, **42 tests** feature Laravel.
