@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: kalmy
+      POSTGRES_USER: kalmy
+      POSTGRES_PASSWORD: kalmy
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kalmy -d kalmy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: Kalmy
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: ${APP_KEY:-base64:CHANGE_ME_GENERATE_WITH_php_artisan_key_generate}
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: kalmy
+      DB_USERNAME: kalmy
+      DB_PASSWORD: kalmy
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "php artisan migrate --force &&
+             php artisan db:seed --force &&
+             php artisan kalmy:rappels-livraison &&
+             php artisan serve --host=0.0.0.0 --port=8000"
+
+  backoffice:
+    build:
+      context: ./backoffice
+      args:
+        NEXT_PUBLIC_API_HOST: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,0 +1,12 @@
+# Sous-projets avec leur propre dépôt Git (ne pas versionner ici)
+/backend/
+/backoffice/
+/mobile/
+/landingpage/
+
+# macOS
+.DS_Store
+
+# Secrets locaux
+.env
+.env.*
