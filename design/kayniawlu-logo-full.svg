@@ -1,0 +1,17 @@
+<svg viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kayñiawlu">
+  <defs>
+    <linearGradient id="kayniawlu-gold" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8C56A"/>
+      <stop stop-color="#DBA639"/>
+      <stop offset="1" stop-color="#B8A75C"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(4,4) scale(0.6)">
+    <circle cx="60" cy="60" r="56" fill="#0F5B40"/>
+    <line x1="40" y1="24" x2="40" y2="96" stroke="url(#kayniawlu-gold)" stroke-width="2.8" stroke-linecap="round"/>
+    <ellipse cx="40" cy="21" rx="3" ry="4.2" stroke="url(#kayniawlu-gold)" stroke-width="1.6" fill="none"/>
+    <path d="M40 44 C58 38 78 42 86 58" stroke="url(#kayniawlu-gold)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M40 58 C62 62 80 72 88 96" stroke="url(#kayniawlu-gold)" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="88" y="52" font-family="Georgia, 'Playfair Display', serif" font-size="34" font-weight="700" fill="#0F5B40">Kayñiawlu</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kayñiawlu">
+  <defs>
+    <linearGradient id="kayniawlu-gold" x1="8" y1="8" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8C56A"/>
+      <stop stop-color="#DBA639"/>
+      <stop offset="1" stop-color="#B8A75C"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="#0F5B40"/>
+  <circle cx="60" cy="60" r="56" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <!-- Aiguille (tige du K) -->
+  <line x1="40" y1="24" x2="40" y2="96" stroke="url(#kayniawlu-gold)" stroke-width="2.8" stroke-linecap="round"/>
+  <ellipse cx="40" cy="21" rx="3" ry="4.2" stroke="url(#kayniawlu-gold)" stroke-width="1.6" fill="none"/>
+  <!-- Fil doré formant le K -->
+  <path d="M40 44 C58 38 78 42 86 58" stroke="url(#kayniawlu-gold)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 58 C62 62 80 72 88 96" stroke="url(#kayniawlu-gold)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Reflet fil -->
+  <path d="M42 46 C58 41 74 44 82 56" stroke="#FFF8E7" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+</svg>
