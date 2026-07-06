@@ -3,6 +3,7 @@
 /backoffice/
 /mobile/
 /landingpage/
+/redaction/
 
 # macOS
 .DS_Store
