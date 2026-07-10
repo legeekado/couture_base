@@ -11,3 +11,6 @@
 # Secrets locaux
 .env
 .env.*
+
+# Assets locaux hors dépôt
+ChatGPT*.png

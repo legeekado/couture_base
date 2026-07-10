@@ -1,0 +1,64 @@
+---
+description: Scripts Playwright/ADB et captures d'interfaces Kalmy (landing, backoffice, mobile)
+globs: scripts/**/*,captures-interfaces/**/*
+alwaysApply: false
+---
+
+# Captures d'interfaces Kalmy / Kayñiawlu
+
+Dépôt racine : scripts + PNG dans `captures-interfaces/`. Sous-projets ignorés ici : `backend/`, `backoffice/`, `landingpage/`, `mobile/` (repos séparés).
+
+## Services requis
+
+| Service | Port | Commande |
+|---------|------|----------|
+| API Laravel | 8000 | `cd backend && php artisan serve` |
+| Landing Next.js | 3001 | `cd landingpage && npm run dev` |
+| Backoffice Next.js **prod** | **3010** | `cd backoffice && npm run build && PORT=3010 npm run start` |
+
+**Backoffice : ne pas capturer sur `:3000` (dev)** — React ne s'hydrate pas en Playwright → spinners bloqués.
+
+## Identifiants test
+
+- Backoffice superadmin : `admin@kalmy.sn` / `password`
+- Mobile / parcours statut commande : `ousmane@ateliermedina.sn` / `password`
+- Émulateur Android : `emulator-5554`, package `sn.kalmy.kalmy`
+
+## Regénérer toutes les captures
+
+```bash
+cd scripts && npm install && npx playwright install chrome
+
+node capture-screenshots.mjs              # landing + backoffice statiques
+node capture-backoffice-parcours.mjs      # parcours backoffice
+
+chmod +x capture-mobile-final.sh capture-mobile-parcours.sh
+./capture-mobile-final.sh emulator-5554
+./capture-mobile-parcours.sh emulator-5554   # ou : fiche-mesure | nouvelle-commande
+```
+
+Sortie : `captures-interfaces/` — voir `README.txt` pour la liste des fichiers.
+
+## Scripts
+
+| Fichier | Rôle |
+|---------|------|
+| `capture-screenshots.mjs` | Playwright — landing (scroll + `forceRevealVisible`, `#offres`) et backoffice (login API + localStorage) |
+| `capture-backoffice-parcours.mjs` | Parcours statut commande (login atelier) + désactiver atelier (login superadmin) |
+| `capture-mobile-final.sh` | ADB — écrans 01–07 (onboarding → paramètres) |
+| `capture-mobile-parcours.sh` | ADB — `nouvelle-commande/` et `fiche-mesure/` |
+| `debug-pricing.mjs` | Debug tarifs landing (headless) |
+
+Variables : `LANDING_URL`, `BACKOFFICE_URL` (défaut `3010`).
+
+## Pièges connus
+
+- **Landing pricing vide** : API `fetchPublicOffers` doit utiliser `cache: "no-store"` ; fallback inject API dans le script si React ne charge pas.
+- **Parcours désactiver atelier** : cibler **Couture Élégance**, pas Atelier Médina (données prod).
+- **Parcours statut commande** : login `ousmane@ateliermedina.sn` (superadmin n'a pas « Changer le statut »).
+- **Mobile** : `adb input text` = ASCII seulement (`%s` pour espaces) ; gérer dialog notifications Android ; fonts Google avec timeout dans `main.dart`.
+- **Mobile build** : Kotlin 1.9 dans `android/build.gradle.kts` pour `sentry_flutter`.
+
+## Design
+
+Palette : primary `#0F5B4C`, secondary `#D8A75C`. Captures sans spinners — attendre données chargées.
